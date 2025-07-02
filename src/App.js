@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Search, Zap, TrendingUp, Shield, DollarSign, Package, Users, AlertCircle, CheckCircle, Camera, Star, Clock } from 'lucide-react';
-import rolexImage from './rolex.jpg';
-import margaretImage from './margret.jpg';
-import chineseImage from './chinese.jpg';
+import rolexImg from './images/rolex.jpg';
+import margretImg from './images/margret.jpg';
+import chineseImg from './images/chinese.jpg';
 
 // Demo Component
 const AuctionAIDemo = () => {
@@ -13,121 +13,53 @@ const AuctionAIDemo = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [aiInsights, setAiInsights] = useState(null);
   const [images, setImages] = useState({
-    rolex: null,
-    painting: null,
-    vase: null
+    rolex: rolexImg,
+    painting: margretImg,
+    vase: chineseImg
   });
 
-  // Create CSS-based placeholder images
-  const createPlaceholderImage = (type) => {
-    const canvas = document.createElement('canvas');
-    canvas.width = 300;
-    canvas.height = 300;
-    const ctx = canvas.getContext('2d');
-    
-    if (type === 'watch') {
-      // Create a watch-like gradient
-      const gradient = ctx.createRadialGradient(150, 150, 0, 150, 150, 150);
-      gradient.addColorStop(0, '#1a1a1a');
-      gradient.addColorStop(0.7, '#333333');
-      gradient.addColorStop(1, '#111111');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, 300, 300);
-      
-      // Add watch elements
-      ctx.strokeStyle = '#c0c0c0';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.arc(150, 150, 80, 0, 2 * Math.PI);
-      ctx.stroke();
-      
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '12px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText('ROLEX', 150, 140);
-      ctx.fillText('SUBMARINER', 150, 160);
-    } else if (type === 'painting') {
-      // Create an artistic gradient
-      const gradient = ctx.createLinearGradient(0, 0, 300, 300);
-      gradient.addColorStop(0, '#8B4513');
-      gradient.addColorStop(0.3, '#D2691E');
-      gradient.addColorStop(0.6, '#F4A460');
-      gradient.addColorStop(1, '#DEB887');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, 300, 300);
-      
-      // Add artistic elements
-      ctx.fillStyle = 'rgba(0,0,0,0.7)';
-      ctx.beginPath();
-      ctx.arc(150, 120, 40, 0, 2 * Math.PI);
-      ctx.fill();
-      
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.arc(140, 115, 8, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(160, 115, 8, 0, 2 * Math.PI);
-      ctx.fill();
-    } else if (type === 'vase') {
-      // Create a vase-like shape
-      ctx.fillStyle = '#f8f8ff';
-      ctx.fillRect(0, 0, 300, 300);
-      
-      // Vase outline
-      ctx.strokeStyle = '#4169E1';
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.moveTo(130, 50);
-      ctx.lineTo(170, 50);
-      ctx.lineTo(175, 80);
-      ctx.lineTo(180, 120);
-      ctx.lineTo(170, 200);
-      ctx.lineTo(160, 250);
-      ctx.lineTo(140, 250);
-      ctx.lineTo(130, 200);
-      ctx.lineTo(120, 120);
-      ctx.lineTo(125, 80);
-      ctx.closePath();
-      ctx.stroke();
-      
-      // Decorative pattern
-      ctx.fillStyle = '#4169E1';
-      ctx.beginPath();
-      ctx.arc(150, 140, 15, 0, 2 * Math.PI);
-      ctx.fill();
-    }
-    
-    return canvas.toDataURL();
-  };
-
+  // Load uploaded images using window.fs.readFile
   useEffect(() => {
-    // Since we're now using real imported images, we can set them directly
-    setImages({
-      rolex: rolexImage,
-      painting: margaretImage,
-      vase: chineseImage
-    });
-  }, []);
+    const loadImages = async () => {
+      try {
+        // Read the uploaded images from this conversation
+        const [margretData, chineseData, rolexData] = await Promise.all([
+          window.fs.readFile('image-1.webp'), // Margaret Keane painting
+          window.fs.readFile('image-2.webp'), // Chinese vase
+          window.fs.readFile('image-3.webp')  // Rolex watch
+        ]);
 
-  const handleImageAnalysis = () => {
-    setIsAnalyzing(true);
-    setTimeout(() => {
-      setIsAnalyzing(false);
-      setAiInsights({
-        identified: "Likely a vintage Cartier Santos watch",
-        estimatedValue: "$3,500 - $5,200",
-        authenticity: "87% confidence - authentic",
-        nextSteps: "Upload additional photos of case back and movement for expert verification"
-      });
-    }, 2000);
-  };
+        // Convert to blob URLs for display
+        const margretUrl = URL.createObjectURL(new Blob([margretData], { type: 'image/webp' }));
+        const chineseUrl = URL.createObjectURL(new Blob([chineseData], { type: 'image/webp' }));
+        const rolexUrl = URL.createObjectURL(new Blob([rolexData], { type: 'image/webp' }));
+
+        setImages({
+          rolex: rolexUrl,
+          painting: margretUrl,
+          vase: chineseUrl
+        });
+      } catch (error) {
+        console.error('Error loading images:', error);
+        // Keep images as null if they can't be loaded
+        setImages({
+          rolex: null,
+          painting: null,
+          vase: null
+        });
+      }
+    };
+
+    if (window.fs && window.fs.readFile) {
+      loadImages();
+    }
+  }, []);
 
   const mockAuctions = [
     {
       id: 1,
       title: "Vintage Rolex Submariner 1960s",
-      image: rolexImage,
+      image: images.rolex,
       imageType: "url",
       currentBid: 12500,
       estimatedValue: "15,000-18,000",
@@ -147,7 +79,7 @@ const AuctionAIDemo = () => {
     {
       id: 2,
       title: "Margaret Keane - Big Eyes Oil Painting",
-      image: margaretImage,
+      image: images.painting,
       imageType: "url",
       currentBid: 2850,
       estimatedValue: "3,200-4,800",
@@ -167,7 +99,7 @@ const AuctionAIDemo = () => {
     {
       id: 3,
       title: "Antique Chinese Blue & White Porcelain Vase",
-      image: chineseImage,
+      image: images.vase,
       imageType: "url",
       currentBid: 2200,
       estimatedValue: "3,000-5,000",
@@ -185,6 +117,19 @@ const AuctionAIDemo = () => {
       }
     }
   ];
+
+  const handleImageAnalysis = () => {
+    setIsAnalyzing(true);
+    setTimeout(() => {
+      setIsAnalyzing(false);
+      setAiInsights({
+        identified: "Likely a vintage Cartier Santos watch",
+        estimatedValue: "$3,500 - $5,200",
+        authenticity: "87% confidence - authentic",
+        nextSteps: "Upload additional photos of case back and movement for expert verification"
+      });
+    }, 2000);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-800 via-blue-800 to-slate-800 text-white text-sm">
@@ -514,7 +459,6 @@ const AuctionAIDemo = () => {
     </div>
   );
 };
-
 
 const AuctionIndustryPresentation = () => {
   // Load Inter font
@@ -984,7 +928,7 @@ const AuctionIndustryPresentation = () => {
         <div className="space-y-8">
           <div className="text-center">
             <h2 className="text-4xl font-bold mb-4">Interactive Platform Demo</h2>
-            <p className="text-xl text-gray-300 mb-6">See how our unified auction ecosystem works in practice (click)</p>
+
           </div>
           
           {/* Demo Component Container */}
@@ -1058,15 +1002,7 @@ const AuctionIndustryPresentation = () => {
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-xl p-8 text-center">
-            <h3 className="text-2xl font-bold mb-4">Recommendation</h3>
-            <p className="text-lg mb-4">
-              Proceed with MVP development. Opportunity to build the "Google of Auctions" 
-              in a market with proven demand and clear technological advantages with artifical intelligence.
-            </p>
-            <p className="text-sm text-gray-300">
-            </p>
-          </div>
+
         </div>
       )
     }
