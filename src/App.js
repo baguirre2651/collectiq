@@ -923,7 +923,6 @@ const AuctionIndustryPresentation = () => {
     {
       id: 'demo',
       title: 'Live Demo',
-      subtitle: 'Experience the CollectIQ platform in action',
       content: (
         <div className="space-y-8">
           <div className="text-center">
