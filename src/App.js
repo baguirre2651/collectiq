@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Search, Zap, TrendingUp, Shield, DollarSign, Package, Users, AlertCircle, CheckCircle, Camera, Star, Clock } from 'lucide-react';
+import rolexImage from './rolex.jpg';
+import margaretImage from './margret.jpg';
+import chineseImage from './chinese.jpg';
 
 // Demo Component
 const AuctionAIDemo = () => {
@@ -99,19 +102,32 @@ const AuctionAIDemo = () => {
   };
 
   useEffect(() => {
-    // Generate placeholder images
+    // Since we're now using real imported images, we can set them directly
     setImages({
-      rolex: createPlaceholderImage('watch'),
-      painting: createPlaceholderImage('painting'),
-      vase: createPlaceholderImage('vase')
+      rolex: rolexImage,
+      painting: margaretImage,
+      vase: chineseImage
     });
   }, []);
+
+  const handleImageAnalysis = () => {
+    setIsAnalyzing(true);
+    setTimeout(() => {
+      setIsAnalyzing(false);
+      setAiInsights({
+        identified: "Likely a vintage Cartier Santos watch",
+        estimatedValue: "$3,500 - $5,200",
+        authenticity: "87% confidence - authentic",
+        nextSteps: "Upload additional photos of case back and movement for expert verification"
+      });
+    }, 2000);
+  };
 
   const mockAuctions = [
     {
       id: 1,
       title: "Vintage Rolex Submariner 1960s",
-      image: images.rolex,
+      image: rolexImage,
       imageType: "url",
       currentBid: 12500,
       estimatedValue: "15,000-18,000",
@@ -131,7 +147,7 @@ const AuctionAIDemo = () => {
     {
       id: 2,
       title: "Margaret Keane - Big Eyes Oil Painting",
-      image: images.painting,
+      image: margaretImage,
       imageType: "url",
       currentBid: 2850,
       estimatedValue: "3,200-4,800",
@@ -151,7 +167,7 @@ const AuctionAIDemo = () => {
     {
       id: 3,
       title: "Antique Chinese Blue & White Porcelain Vase",
-      image: images.vase,
+      image: chineseImage,
       imageType: "url",
       currentBid: 2200,
       estimatedValue: "3,000-5,000",
@@ -169,19 +185,6 @@ const AuctionAIDemo = () => {
       }
     }
   ];
-
-  const handleImageAnalysis = () => {
-    setIsAnalyzing(true);
-    setTimeout(() => {
-      setIsAnalyzing(false);
-      setAiInsights({
-        identified: "Likely a vintage Cartier Santos watch",
-        estimatedValue: "$3,500 - $5,200",
-        authenticity: "87% confidence - authentic",
-        nextSteps: "Upload additional photos of case back and movement for expert verification"
-      });
-    }, 2000);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-800 via-blue-800 to-slate-800 text-white text-sm">
@@ -511,6 +514,7 @@ const AuctionAIDemo = () => {
     </div>
   );
 };
+
 
 const AuctionIndustryPresentation = () => {
   // Load Inter font
@@ -980,24 +984,7 @@ const AuctionIndustryPresentation = () => {
         <div className="space-y-8">
           <div className="text-center">
             <h2 className="text-4xl font-bold mb-4">Interactive Platform Demo</h2>
-            <p className="text-xl text-gray-300 mb-6">See how our unified auction ecosystem works in practice</p>
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6 max-w-4xl mx-auto">
-              <p className="text-lg mb-4">This demo showcases:</p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                <div className="bg-white/10 rounded-lg p-3">
-                  <h4 className="font-semibold text-blue-400">Cross-Platform Discovery</h4>
-                  <p className="text-gray-300">Search across all major auction houses simultaneously</p>
-                </div>
-                <div className="bg-white/10 rounded-lg p-3">
-                  <h4 className="font-semibold text-green-400">AI-Powered Analysis</h4>
-                  <p className="text-gray-300">Instant authenticity verification and market insights</p>
-                </div>
-                <div className="bg-white/10 rounded-lg p-3">
-                  <h4 className="font-semibold text-purple-400">Unified Experience</h4>
-                  <p className="text-gray-300">Complete ecosystem from discovery to delivery</p>
-                </div>
-              </div>
-            </div>
+            <p className="text-xl text-gray-300 mb-6">See how our unified auction ecosystem works in practice (click)</p>
           </div>
           
           {/* Demo Component Container */}
@@ -1008,7 +995,7 @@ const AuctionIndustryPresentation = () => {
           <div className="bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-xl p-6 text-center">
             <h3 className="text-xl font-bold text-green-400 mb-2">Demo Highlights</h3>
             <p className="text-gray-300">
-              This working prototype demonstrates our core value proposition: bringing together fragmented auction services 
+              Bringing together fragmented auction services 
               into one intelligent, AI-powered platform that benefits both buyers and sellers.
             </p>
           </div>
@@ -1074,12 +1061,10 @@ const AuctionIndustryPresentation = () => {
           <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-xl p-8 text-center">
             <h3 className="text-2xl font-bold mb-4">Recommendation</h3>
             <p className="text-lg mb-4">
-              <strong>Proceed with MVP development.</strong> This represents a significant opportunity to build the "Google of Auctions" 
-              in a market with proven demand and clear technological advantages.
+              Proceed with MVP development. Opportunity to build the "Google of Auctions" 
+              in a market with proven demand and clear technological advantages with artifical intelligence.
             </p>
             <p className="text-sm text-gray-300">
-              The auction industry is ripe for disruption through AI and aggregation. 
-              We have a clear path to create value for all stakeholders while building a defensible business.
             </p>
           </div>
         </div>
