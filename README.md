@@ -1,4 +1,4 @@
-## started looking into auctions. Hypothesizing ways to build a platform that challenges and changes consumer behavior. 
+## started looking and building in the live auction commerce space. Hypothesizing ways to build a platform that challenges and changes consumer behavior. 
 
 https://baguirre2651.github.io/collectiq/
 
